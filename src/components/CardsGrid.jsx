@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
 import { supabase } from "../supabase/supabaseClient";
 
 export default function CardsGrid() {
@@ -26,7 +27,6 @@ export default function CardsGrid() {
     }
   };
 
-  // 📌 Share function
   const handleShare = async (card) => {
     const shareId = card.uuid_id || card.id;
     const url = `${window.location.origin}/card/${shareId}`;
@@ -49,69 +49,91 @@ export default function CardsGrid() {
 
   if (loading) {
     return (
-      <section className="py-16 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center">Loading...</div>
+      <section className="py-20 bg-[#0B0F1A]">
+        <div className="max-w-7xl mx-auto px-4 text-center">
+          <div className="text-yellow-400 text-xl font-bold animate-pulse uppercase tracking-widest">
+            Loading...
+          </div>
         </div>
       </section>
     );
   }
 
   return (
-    <section className="py-16 bg-gray-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h2 className="text-4xl font-bold text-center mb-12 text-gray-800">
-          Explore
-        </h2>
+    <section className="py-24 bg-[#0B0F1A] overflow-hidden">
+      <div className="max-w-7xl mx-auto px-6 lg:px-12">
+        
+        {/* Header */}
+        <div className="flex flex-col items-center mb-16">
+          <h2 className="text-4xl md:text-6xl font-black text-white uppercase tracking-tighter">
+            Explore <span className="text-yellow-400">Collection</span>
+          </h2>
+          <div className="h-1.5 w-16 bg-yellow-400 mt-4 rounded-full" />
+        </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        {/* Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
           {cards.map((card) => {
-            const routeId = card.uuid_id || card.id; // UUID preferred
+            const routeId = card.uuid_id || card.id;
 
             return (
-              <div
+              <motion.div
                 key={routeId}
-                className="relative bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                className="relative group"
               >
+                {/* Background Glow on Hover */}
+                <div className="absolute inset-0 bg-yellow-400/5 rounded-2xl blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+
                 {/* MAIN CLICK AREA */}
-                <Link to={`/card/${routeId}`}>
+                <Link 
+                  to={`/card/${routeId}`}
+                  className="relative block bg-[#111827] rounded-2xl border border-white/5 overflow-hidden transition-all duration-300 hover:border-yellow-400/40 hover:-translate-y-2 shadow-2xl"
+                >
                   {card.image_url && (
-                    <div className="h-48 overflow-hidden">
+                    <div className="h-48 overflow-hidden relative border-b border-white/5">
                       <img
                         src={card.image_url}
                         alt={card.title}
-                        className="w-full h-full object-cover"
+                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                       />
+                      <div className="absolute inset-0 bg-gradient-to-t from-[#111827]/80 to-transparent opacity-60" />
                     </div>
                   )}
 
                   <div className="p-6">
-                    <h3 className="text-xl font-semibold text-gray-800 mb-2">
+                    <h3 className="text-xl font-bold text-white mb-2 group-hover:text-yellow-400 transition-colors">
                       {card.title}
                     </h3>
-                    <p className="text-sm text-gray-500 uppercase">
-                      {card.type}
-                    </p>
+                    <div className="flex items-center gap-2">
+                      <span className="h-px w-4 bg-yellow-400" />
+                      <p className="text-[10px] text-yellow-400 font-black uppercase tracking-widest">
+                        {card.type}
+                      </p>
+                    </div>
                   </div>
                 </Link>
 
                 {/* SHARE BUTTON */}
                 <button
                   onClick={() => handleShare(card)}
-                  className="absolute top-2 right-2 bg-white/90 px-3 py-1 
-                  rounded-full text-xs shadow hover:bg-blue-600 hover:text-white 
-                  transition-all duration-200"
+                  className="absolute top-3 right-3 z-10 bg-yellow-400 text-black px-3 py-1.5 
+                  rounded-lg text-[10px] font-black uppercase tracking-widest shadow-xl 
+                  hover:bg-white transition-all duration-300 transform scale-90 opacity-0 group-hover:opacity-100 group-hover:scale-100"
                 >
                   Share
                 </button>
-              </div>
+              </motion.div>
             );
           })}
         </div>
 
+        {/* Empty State */}
         {cards.length === 0 && (
-          <div className="text-center text-gray-500 py-12">
-            No cards available yet.
+          <div className="text-center text-slate-500 py-20 font-bold uppercase tracking-widest">
+            No items available yet.
           </div>
         )}
       </div>

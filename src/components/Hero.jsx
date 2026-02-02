@@ -28,113 +28,92 @@ export default function Hero() {
 
   if (loading) {
     return (
-      <div className="h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-800 flex items-center justify-center">
-        <div className="text-white text-xl">Loading...</div>
+      <div className="h-screen bg-[#0B0F1A] flex items-center justify-center">
+        <div className="text-yellow-500 text-xl animate-pulse font-medium">Loading...</div>
       </div>
     )
   }
 
   return (
-    <section className="relative h-screen w-full overflow-hidden bg-gradient-to-br from-slate-900 via-blue-900 to-slate-800 flex items-center justify-center">
-      {/* Animated Background Mesh */}
+    <section className="relative h-screen w-full overflow-hidden bg-[#0B0F1A] flex items-center justify-center">
+      
+      {/* ⭐ Yellow Theme Background Mesh - Static & Subtle */}
       <div className="absolute inset-0">
-        <div className="absolute top-0 left-0 w-96 h-96 bg-blue-600 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob"></div>
-        <div className="absolute top-0 right-0 w-96 h-96 bg-indigo-600 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-2000"></div>
-        <div className="absolute bottom-0 left-1/2 w-96 h-96 bg-cyan-600 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-4000"></div>
+        <div className="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-yellow-600 rounded-full mix-blend-screen filter blur-[120px] opacity-[0.07]"></div>
+        <div className="absolute bottom-[-10%] right-[-10%] w-[500px] h-[500px] bg-amber-500 rounded-full mix-blend-screen filter blur-[120px] opacity-[0.07]"></div>
       </div>
 
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+      <div className="relative z-10 max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 w-full">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          {/* Profile Image */}
+          
+          {/* Profile Image - Permanent Color & Static */}
           <motion.div
             className="flex justify-center lg:justify-start"
-            initial={{ opacity: 0, scale: 0.5 }}
+            initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.8, ease: 'easeOut' }}
           >
-            <motion.div
-              animate={{
-                y: [0, -20, 0],
-              }}
-              transition={{
-                duration: 3,
-                repeat: Infinity,
-                ease: 'easeInOut',
-              }}
-              className="relative"
-            >
+            <div className="relative">
+              {/* Permanent Soft Yellow Glow */}
+              <div className="absolute inset-0 bg-yellow-500 rounded-full blur-3xl opacity-20"></div>
+              
               {hero?.photo_url ? (
-                <div className="relative">
-                  <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full blur-2xl opacity-40 animate-pulse"></div>
-                  <img
-                    src={hero.photo_url}
-                    alt="Profile"
-                    className="relative w-64 h-64 lg:w-80 lg:h-80 rounded-full object-cover border-4 border-white/20 shadow-2xl"
-                  />
-                </div>
+                <img
+                  src={hero.photo_url}
+                  alt="Profile"
+                  className="relative w-56 h-56 md:w-64 md:h-64 lg:w-80 lg:h-80 rounded-full object-cover border-4 border-yellow-400 shadow-2xl"
+                />
               ) : (
-                <div className="w-64 h-64 lg:w-80 lg:h-80 rounded-full bg-white/10 backdrop-blur-sm flex items-center justify-center border-4 border-white/20 shadow-2xl">
-                  <span className="text-6xl">👤</span>
+                <div className="w-56 h-56 md:w-64 md:h-64 lg:w-80 lg:h-80 rounded-full bg-yellow-400/10 backdrop-blur-sm flex items-center justify-center border-4 border-yellow-400/20 shadow-2xl">
+                  <span className="text-6xl text-yellow-400/50">👤</span>
                 </div>
               )}
-            </motion.div>
+            </div>
           </motion.div>
 
-          {/* Name and Designation */}
+          {/* Text Content - Clear Hierarchy */}
           <motion.div
             className="text-center lg:text-left"
-            initial={{ opacity: 0, y: 50 }}
+            initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
           >
+            {/* Small Label */}
+            
+
+            {/* Name - Pure White */}
             <motion.h1
-              className="text-6xl lg:text-8xl font-bold mb-6 text-white"
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.4 }}
+              className="text-5xl md:text-7xl lg:text-8xl font-black mb-4 text-white tracking-tighter"
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8, delay: 0.5 }}
             >
               {hero?.name || 'Your Name'}
             </motion.h1>
+
+            {/* Visual Divider */}
+            <motion.div 
+              className="h-1.5 w-20 bg-yellow-500 mb-6 mx-auto lg:mx-0 rounded-full"
+              initial={{ width: 0 }}
+              animate={{ width: 80 }}
+              transition={{ delay: 0.7, duration: 0.6 }}
+            />
+
+            {/* Designation - Yellow */}
             <motion.p
-              className="text-2xl lg:text-3xl text-blue-200 font-light"
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.6 }}
+              className="text-xl md:text-2xl lg:text-3xl text-yellow-400 font-bold tracking-tight mb-6"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.8, delay: 0.8 }}
             >
               {hero?.designation || 'Your Designation'}
             </motion.p>
+
+            {/* Bio Text */}
+            
           </motion.div>
         </div>
       </div>
-
-      {/* Scroll Indicator */}
-      <motion.div
-        className="absolute bottom-10 left-1/2 transform -translate-x-1/2"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1, duration: 0.5 }}
-      >
-        <motion.div
-          animate={{ y: [0, 10, 0] }}
-          transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut' }}
-          className="flex flex-col items-center text-white/70"
-        >
-          <span className="text-sm mb-2">Scroll</span>
-          <svg
-            className="w-6 h-6"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M19 14l-7 7m0 0l-7-7m7 7V3"
-            />
-          </svg>
-        </motion.div>
-      </motion.div>
     </section>
   )
 }

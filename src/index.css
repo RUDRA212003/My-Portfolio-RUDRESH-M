@@ -168,3 +168,17 @@ body {
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+/* Hide default cursor globally */
+* {
+  cursor: none !important;
+}
+
+/* Ensure mobile users still see standard touch behavior */
+@media (max-width: 768px) {
+  * {
+    cursor: auto !important;
+  }
+  .custom-cursor-hidden {
+    display: none;
+  }
+}

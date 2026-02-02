@@ -1,213 +1,102 @@
 import { Outlet, Link, useLocation } from "react-router-dom";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import SmoothScroll from "./SmoothScroll";
 import { useEffect, useState } from "react";
+import CustomCursor from "./CustomCursor"; // Import the cursor
 
 export default function Layout() {
   const location = useLocation();
   const isAdminRoute = location.pathname.startsWith("/admin");
 
-  /* ------------------------------------------------------
-     ⭐ NAVBAR SCROLL STATE
-  ------------------------------------------------------- */
   const [scrolled, setScrolled] = useState(false);
+  const [routeLoading, setRouteLoading] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 80);
+    const handleScroll = () => setScrolled(window.scrollY > 20);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const navbarBg = scrolled
-    ? "bg-white/90 backdrop-blur-md shadow-md border-b border-slate-200"
-    : "bg-transparent";
-
-  const navText = scrolled ? "text-slate-800" : "text-white";
-  const navHover = scrolled ? "hover:text-blue-600" : "hover:text-blue-300";
-
-  /* ------------------------------------------------------
-     ⭐ GLOBAL ROUTE LOADING DETECTION
-  ------------------------------------------------------- */
-  const [routeLoading, setRouteLoading] = useState(false);
-
   useEffect(() => {
     setRouteLoading(true);
-
-    const timer = setTimeout(() => {
-      setRouteLoading(false);
-    }, 500); // Smooth fade-out time
-
+    const timer = setTimeout(() => setRouteLoading(false), 500);
     return () => clearTimeout(timer);
   }, [location.pathname]);
 
-  /* ------------------------------------------------------
-     ⭐ FULL PAGE CONTENT WRAPPER
-  ------------------------------------------------------- */
+  const navbarBg = scrolled
+    ? "bg-[#0B0F1A]/95 backdrop-blur-md border-b border-yellow-400/10 py-4 shadow-2xl"
+    : "bg-transparent py-7";
+
   const content = (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-[#0B0F1A] text-slate-300 selection:bg-yellow-400 selection:text-black">
+      {/* 🖱️ CUSTOM CURSOR MOUNTED AT ROOT */}
+      <CustomCursor />
 
-      {/* ⭐ GLOBAL TOP LOADING BAR */}
-      {routeLoading && (
-        <div className="fixed top-0 left-0 w-full h-1 z-[9999]">
-          <div className="h-full bg-blue-600 animate-loading-bar"></div>
-        </div>
-      )}
+      <AnimatePresence>
+        {routeLoading && (
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed top-0 left-0 w-full h-[2px] z-[9999] bg-yellow-400 shadow-[0_0_10px_#facc15]"
+          />
+        )}
+      </AnimatePresence>
 
-      {/* NAVBAR */}
       <motion.nav
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${navbarBg}`}
-        initial={{ y: -80 }}
-        animate={{ y: 0 }}
-        transition={{ duration: 0.4 }}
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${navbarBg}`}
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
       >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between h-16">
+        <div className="max-w-7xl mx-auto px-6 lg:px-12">
+          <div className="flex justify-between items-center">
+            <Link to="/" className="group relative">
+              <span className="text-xl md:text-2xl font-black text-white uppercase tracking-tighter">
+                Rudresh <span className="text-yellow-400">M</span>
+              </span>
+              <span className="inline-block w-1.5 h-1.5 bg-yellow-400 rounded-full ml-1 mb-1"></span>
+            </Link>
 
-            {/* LOGO */}
-            <div className="flex items-center">
-              <Link
-                to="/"
-                className={`text-xl font-bold transition-colors ${navText} ${navHover}`}
-              >
-                Rudresh M
-              </Link>
+            <div className="flex items-center space-x-6 md:space-x-10">
+              {["Home", "Projects", "Resume"].map((item) => (
+                <Link
+                  key={item}
+                  to={item === "Home" ? "/" : `/${item.toLowerCase()}`}
+                  className={`text-[10px] md:text-xs uppercase tracking-[0.25em] font-bold ${
+                    location.pathname === (item === "Home" ? "/" : `/${item.toLowerCase()}`)
+                      ? "text-yellow-400"
+                      : "text-white/60 hover:text-yellow-400 transition-colors"
+                  }`}
+                >
+                  {item}
+                </Link>
+              ))}
             </div>
-
-            {/* NAV LINKS */}
-            <div className="flex items-center space-x-4">
-              <Link
-                to="/"
-                className={`${navText} ${navHover} px-3 py-2 rounded-md text-sm font-medium transition-colors`}
-              >
-                Home
-              </Link>
-
-              <Link
-                to="/projects"
-                className={`${navText} ${navHover} px-3 py-2 rounded-md text-sm font-medium transition-colors`}
-              >
-                Projects
-              </Link>
-
-              <Link
-                to="/resume"
-                className={`${navText} ${navHover} px-3 py-2 rounded-md text-sm font-medium transition-colors`}
-              >
-                Resume
-              </Link>
-            </div>
-
           </div>
         </div>
       </motion.nav>
 
-      {/* PAGE CONTENT */}
-      <main className={location.pathname === "/" ? "" : "pt-16"}>
+      <main className={location.pathname === "/" ? "" : "pt-24"}>
         <Outlet />
       </main>
 
-      {/* FOOTER */}
-      <footer className="bg-gradient-to-r from-slate-800 to-slate-900 text-white py-10 mt-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-
-          {/* SOCIAL LINKS */}
-          <div className="flex flex-wrap justify-center gap-6 mb-6">
-
-            <a
-              href="https://www.linkedin.com/in/rudresh-manjunath21/"
-              target="_blank"
-              className="group flex items-center gap-2 px-4 py-2 bg-white/10 hover:bg-white/20 rounded-lg transition"
-            >
-              <img
-                src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/linkedin.svg"
-                className="w-5 h-5"
-              />
-              <span className="text-sm">LinkedIn</span>
-            </a>
-
-            <a
-              href="https://github.com/RUDRA212003"
-              target="_blank"
-              className="group flex items-center gap-2 px-4 py-2 bg-white/10 hover:bg-white/20 rounded-lg transition"
-            >
-              <img
-                src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/github.svg"
-                className="w-5 h-5"
-              />
-              <span className="text-sm">GitHub</span>
-            </a>
-
-            <a
-              href="https://x.com/yo_rudra"
-              target="_blank"
-              className="group flex items-center gap-2 px-4 py-2 bg-white/10 hover:bg-white/20 rounded-lg transition"
-            >
-              <img
-                src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg"
-                className="w-5 h-5"
-              />
-              <span className="text-sm">X</span>
-            </a>
-
-            <a
-              href="https://www.instagram.com/yoyorudra_offical/?hl=en"
-              target="_blank"
-              className="group flex items-center gap-2 px-4 py-2 bg-white/10 hover:bg-white/20 rounded-lg transition"
-            >
-              <img
-                src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg"
-                className="w-5 h-5"
-              />
-              <span className="text-sm">Instagram</span>
-            </a>
-
-            <a
-              href="https://www.youtube.com/@yoyorudraandroidtech"
-              target="_blank"
-              className="group flex items-center gap-2 px-4 py-2 bg-white/10 hover:bg-white/20 rounded-lg transition"
-            >
-              <img
-                src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/youtube.svg"
-                className="w-5 h-5"
-              />
-              <span className="text-sm">YouTube</span>
-            </a>
-
-            <a
-              href="mailto:rudreshmanjunath15@gmail.com"
-              className="group flex items-center gap-2 px-4 py-2 bg-white/10 hover:bg-white/20 rounded-lg transition"
-            >
-              <img
-                src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/gmail.svg"
-                className="w-5 h-5"
-              />
-              <span className="text-sm">Email</span>
-            </a>
-
+      <footer className="bg-[#080C14] border-t border-yellow-400/5 py-16">
+        <div className="max-w-7xl mx-auto px-6 lg:px-12 text-center md:text-left">
+          <div className="flex flex-col md:flex-row justify-between items-center gap-10">
+            <div>
+              <h3 className="text-white font-black text-3xl uppercase tracking-tighter mb-2">
+                Rudresh <span className="text-yellow-400">Manjunath</span>
+              </h3>
+              <p className="text-slate-500 text-sm max-w-xs font-medium">
+                Designing and developing digital solutions with precision.
+              </p>
+            </div>
           </div>
-
-          <div className="border-t border-white/20 my-6"></div>
-
-          <div className="flex flex-col md:flex-row justify-between items-center text-sm opacity-90">
-            <p>&copy; 2025 Rudresh M Portfolio. All rights reserved.</p>
-
-            <Link
-              to="/admin/login"
-              className="text-slate-300 hover:text-white mt-3 md:mt-0 transition"
-            >
-              Admin
-            </Link>
-          </div>
-
         </div>
       </footer>
-
     </div>
   );
 
-  /* If route is admin, do NOT apply smooth scroll */
   if (isAdminRoute) return content;
-
-  /* Wrap normal pages with smooth scrolling */
   return <SmoothScroll>{content}</SmoothScroll>;
 }

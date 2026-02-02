@@ -37,109 +37,120 @@ export default function ContactForm() {
   }
 
   return (
-    <section className="relative py-28 overflow-hidden bg-gradient-to-b from-slate-100 to-white">
-
-      {/* Background Blobs */}
+    <section className="relative py-28 overflow-hidden bg-[#0B0F1A]">
+      
+      {/* Subtle Yellow Glow Background */}
       <div className="absolute inset-0 -z-10">
-        <div className="absolute top-20 left-10 w-80 h-80 bg-blue-500 opacity-20 blur-3xl rounded-full"></div>
-        <div className="absolute bottom-10 right-10 w-96 h-96 bg-cyan-500 opacity-20 blur-3xl rounded-full"></div>
-        <div className="absolute top-1/2 left-1/2 w-[550px] h-[550px] bg-indigo-400 opacity-10 blur-[120px] rounded-full"></div>
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-yellow-400/5 blur-[120px] rounded-full"></div>
       </div>
 
       {/* Main Title */}
-      <div className="text-center mb-14">
+      <div className="text-center mb-10 px-6">
         <motion.h2
           initial={{ opacity: 0, y: -20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          className="text-5xl font-extrabold text-slate-800 tracking-tight"
+          viewport={{ once: true }}
+          className="text-4xl md:text-5xl font-black text-white uppercase tracking-tighter"
         >
-          Get in Touch ✨
+          Get in <span className="text-yellow-400">Touch</span>
         </motion.h2>
-        <p className="text-slate-500 mt-3 text-lg">I'd love to hear from you!</p>
+        <div className="h-1.5 w-16 bg-yellow-400 mx-auto mt-6 rounded-full" />
+        <p className="text-slate-400 mt-6 text-lg font-medium">Let's build something exceptional together.</p>
       </div>
 
-      <div className="max-w-3xl mx-auto px-6">
-
+      <div className="max-w-4xl mx-auto px-6">
         {/* Contact Form */}
         <motion.form
           onSubmit={handleSubmit}
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="
-            backdrop-blur-xl bg-white/30 border border-white/40 
-            p-10 rounded-3xl shadow-2xl space-y-8
-          "
+          className="bg-[#111827] border border-white/5 p-8 md:p-12 rounded-[2.5rem] shadow-2xl space-y-6"
         >
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {/* Name */}
+            <div className="relative group">
+              <User className="absolute left-5 top-1/2 -translate-y-1/2 text-slate-500 group-focus-within:text-yellow-400 transition-colors w-5 h-5" />
+              <input
+                type="text"
+                required
+                value={formData.name}
+                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                className="w-full pl-14 pr-6 py-5 rounded-2xl bg-[#0B0F1A] border border-white/10 focus:border-yellow-400 text-white outline-none transition-all font-medium"
+                placeholder="Name"
+              />
+            </div>
 
-          {/* Input + Icon Wrapper */}
-          <div className="relative">
-            <User className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 w-5 h-5" />
-            <input
-              type="text"
-              required
-              value={formData.name}
-              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-              className="
-                w-full pl-12 pr-4 py-4 rounded-xl bg-white/60 
-                shadow-inner border border-slate-300 
-                focus:border-blue-500 focus:ring-4 focus:ring-blue-200 transition outline-none
-              "
-              placeholder="Your Name"
-            />
-          </div>
-
-          {/* Email */}
-          <div className="relative">
-            <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 w-5 h-5" />
-            <input
-              type="email"
-              required
-              value={formData.email}
-              onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-              className="
-                w-full pl-12 pr-4 py-4 rounded-xl bg-white/60 
-                border border-slate-300 shadow-inner 
-                focus:border-blue-500 focus:ring-4 focus:ring-blue-200 transition outline-none
-              "
-              placeholder="Your Email"
-            />
+            {/* Email */}
+            <div className="relative group">
+              <Mail className="absolute left-5 top-1/2 -translate-y-1/2 text-slate-500 group-focus-within:text-yellow-400 transition-colors w-5 h-5" />
+              <input
+                type="email"
+                required
+                value={formData.email}
+                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                className="w-full pl-14 pr-6 py-5 rounded-2xl bg-[#0B0F1A] border border-white/10 focus:border-yellow-400 text-white outline-none transition-all font-medium"
+                placeholder="Email Address"
+              />
+            </div>
           </div>
 
           {/* Message */}
-          <div className="relative">
-            <MessageSquare className="absolute left-4 top-6 text-slate-500 w-5 h-5" />
+          <div className="relative group">
+            <MessageSquare className="absolute left-5 top-6 text-slate-500 group-focus-within:text-yellow-400 transition-colors w-5 h-5" />
             <textarea
               rows="6"
               required
               value={formData.message}
               onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-              className="
-                w-full pl-12 pr-4 py-4 rounded-xl bg-white/60 
-                border border-slate-300 shadow-inner resize-none
-                focus:border-blue-500 focus:ring-4 focus:ring-blue-200 transition outline-none
-              "
+              className="w-full pl-14 pr-6 py-5 rounded-2xl bg-[#0B0F1A] border border-white/10 focus:border-yellow-400 text-white outline-none transition-all resize-none font-medium"
               placeholder="Your Message"
             ></textarea>
-            
           </div>
 
           {/* Submit Button */}
           <motion.button
-            whileHover={{ scale: 1.03 }}
-            whileTap={{ scale: 0.95 }}
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
             type="submit"
             disabled={submitting}
-            className="
-              w-full py-4 text-lg font-semibold text-white rounded-xl 
-              bg-gradient-to-r from-blue-600 to-cyan-500 shadow-lg
-              hover:shadow-blue-500/40 transition disabled:opacity-50
-            "
+            className="w-full py-5 text-lg font-black uppercase tracking-widest text-black bg-yellow-400 rounded-2xl shadow-[0_10px_30px_rgba(250,204,21,0.2)] hover:bg-yellow-300 transition-all disabled:opacity-50"
           >
-            
             {submitting ? "Sending..." : "Send Message"}
           </motion.button>
         </motion.form>
+
+        {/* Social Links Grid */}
+        {/* <div className="mt-20">
+          <h3 className="text-center text-sm font-black text-yellow-400/50 uppercase tracking-[0.3em] mb-10">
+            Digital Presence
+          </h3>
+          <div className="flex flex-wrap justify-center gap-4">
+            {[
+              { name: "linkedin", url: "https://www.linkedin.com/in/rudresh-manjunath21/" },
+              { name: "github", url: "https://github.com/RUDRA212003" },
+              { name: "x", url: "https://x.com/yo_rudra" },
+              { name: "instagram", url: "https://www.instagram.com/yoyorudra_offical/?hl=en" },
+              { name: "youtube", url: "https://www.youtube.com/@yoyorudraandroidtech" },
+              { name: "gmail", url: "mailto:rudreshmanjunath15@gmail.com" }
+            ].map((social) => (
+              <a
+                key={social.name}
+                href={social.url}
+                target="_blank"
+                rel="noreferrer"
+                className="group flex items-center justify-center w-14 h-14 bg-[#111827] border border-white/5 rounded-2xl hover:bg-yellow-400 transition-all duration-300 shadow-xl"
+              >
+                <img 
+                  src={`https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/${social.name}.svg`} 
+                  className="w-6 h-6 invert group-hover:invert-0 transition-all" 
+                  alt={social.name}
+                />
+              </a>
+            ))}
+          </div>
+        </div> */}
 
         {/* Toast Notification */}
         <AnimatePresence>
@@ -148,90 +159,14 @@ export default function ContactForm() {
               initial={{ opacity: 0, y: 40 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: 40 }}
-              className="
-                fixed bottom-6 right-6 bg-white shadow-2xl 
-                p-4 rounded-xl border border-slate-200 backdrop-blur-md 
-                flex items-center gap-3 z-50
-              "
+              className="fixed bottom-10 right-10 bg-yellow-400 shadow-2xl p-5 rounded-2xl flex items-center gap-4 z-50"
             >
-              
-              <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-              <p className="text-slate-700 font-medium">Message sent successfully!</p>
+              <div className="w-2 h-2 bg-black rounded-full animate-ping"></div>
+              <p className="text-black font-black uppercase tracking-widest text-xs">Message sent , I will contact you shortly</p>
             </motion.div>
           )}
-          
         </AnimatePresence>
       </div>
-      {/* Social Media Links */}
-<div className="max-w-3xl mx-auto mt-12 px-6">
-  <h3 className="text-center text-2xl font-bold text-slate-800 mb-6">
-    Connect With Me 🌐
-  </h3>
-
-  <div className="flex flex-wrap justify-center gap-6">
-
-    {/* LinkedIn */}
-    <a 
-      href="https://www.linkedin.com/in/rudresh-manjunath21/" 
-      target="_blank" 
-      className="group flex items-center gap-3 px-5 py-3 bg-white/50 backdrop-blur-xl border border-slate-300 rounded-xl shadow-md hover:shadow-blue-400/40 hover:bg-blue-50 transition"
-    >
-      <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/linkedin.svg" className="w-6 h-6 group-hover:scale-110 transition" />
-      <span className="font-semibold text-slate-700">LinkedIn</span>
-    </a>
-
-    {/* GitHub */}
-    <a 
-      href="https://github.com/RUDRA212003" 
-      target="_blank" 
-      className="group flex items-center gap-3 px-5 py-3 bg-white/50 backdrop-blur-xl border border-slate-300 rounded-xl shadow-md hover:shadow-slate-400/40 hover:bg-slate-100 transition"
-    >
-      <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/github.svg" className="w-6 h-6 group-hover:scale-110 transition" />
-      <span className="font-semibold text-slate-700">GitHub</span>
-    </a>
-
-    {/* X (Twitter) */}
-    <a 
-      href="https://x.com/yo_rudra" 
-      target="_blank" 
-      className="group flex items-center gap-3 px-5 py-3 bg-white/50 backdrop-blur-xl border border-slate-300 rounded-xl shadow-md hover:shadow-black/40 hover:bg-slate-100 transition"
-    >
-      <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg" className="w-6 h-6 group-hover:scale-110 transition" />
-      <span className="font-semibold text-slate-700">X (Twitter)</span>
-    </a>
-
-    {/* Instagram */}
-    <a 
-      href="https://www.instagram.com/yoyorudra_offical/?hl=en" 
-      target="_blank" 
-      className="group flex items-center gap-3 px-5 py-3 bg-white/50 backdrop-blur-xl border border-slate-300 rounded-xl shadow-md hover:shadow-pink-400/40 hover:bg-pink-50 transition"
-    >
-      <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg" className="w-6 h-6 group-hover:scale-110 transition" />
-      <span className="font-semibold text-slate-700">Instagram</span>
-    </a>
-
-    {/* YouTube */}
-    <a 
-      href="https://www.youtube.com/@yoyorudraandroidtech" 
-      target="_blank" 
-      className="group flex items-center gap-3 px-5 py-3 bg-white/50 backdrop-blur-xl border border-slate-300 rounded-xl shadow-md hover:shadow-red-400/40 hover:bg-red-50 transition"
-    >
-      <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/youtube.svg" className="w-6 h-6 group-hover:scale-110 transition" />
-      <span className="font-semibold text-slate-700">YouTube</span>
-    </a>
-
-    {/* Gmail */}
-    <a 
-      href="mailto:rudreshmanjunath15@gmail.com" 
-      className="group flex items-center gap-3 px-5 py-3 bg-white/50 backdrop-blur-xl border border-slate-300 rounded-xl shadow-md hover:shadow-red-400/40 hover:bg-red-50 transition"
-    >
-      <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/gmail.svg" className="w-6 h-6 group-hover:scale-110 transition" />
-      <span className="font-semibold text-slate-700">Gmail</span>
-    </a>
-
-  </div>
-</div>
-
     </section>
   )
 }
