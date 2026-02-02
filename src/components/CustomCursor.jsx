@@ -4,24 +4,28 @@ import { motion, useMotionValue, useSpring, AnimatePresence } from "framer-motio
 export default function CustomCursor() {
   const [isHovered, setIsHovered] = useState(false);
   const [isClicked, setIsClicked] = useState(false);
+  const [isVisible, setIsVisible] = useState(false); // New state to track if mouse is in window
 
-  // Raw Motion Values for the fastest response
   const rawX = useMotionValue(0);
   const rawY = useMotionValue(0);
 
-  // Physics: Stiffness 1000+ eliminates noticeable delay
   const springConfig = { stiffness: 1000, damping: 50, mass: 0.5 };
   const cursorX = useSpring(rawX, springConfig);
   const cursorY = useSpring(rawY, springConfig);
 
   useEffect(() => {
     const handleMouseMove = (e) => {
+      // If it's the first movement, make it visible
+      if (!isVisible) setIsVisible(true);
       rawX.set(e.clientX);
       rawY.set(e.clientY);
     };
 
     const handleMouseDown = () => setIsClicked(true);
     const handleMouseUp = () => setIsClicked(false);
+
+    const handleMouseLeave = () => setIsVisible(false); // Hide when mouse leaves window
+    const handleMouseEnter = () => setIsVisible(true);  // Show when mouse enters window
 
     const handleMouseOver = (e) => {
       const target = e.target;
@@ -38,25 +42,35 @@ export default function CustomCursor() {
     window.addEventListener("mousedown", handleMouseDown);
     window.addEventListener("mouseup", handleMouseUp);
     window.addEventListener("mouseover", handleMouseOver);
+    document.addEventListener("mouseleave", handleMouseLeave);
+    document.addEventListener("mouseenter", handleMouseEnter);
 
     return () => {
       window.removeEventListener("mousemove", handleMouseMove);
       window.removeEventListener("mousedown", handleMouseDown);
       window.removeEventListener("mouseup", handleMouseUp);
       window.removeEventListener("mouseover", handleMouseOver);
+      document.removeEventListener("mouseleave", handleMouseLeave);
+      document.removeEventListener("mouseenter", handleMouseEnter);
     };
-  }, [rawX, rawY]);
+  }, [rawX, rawY, isVisible]);
 
   return (
     <motion.div
       className="fixed top-0 left-0 pointer-events-none z-[99999] hidden md:block"
       style={{ x: cursorX, y: cursorY, willChange: "transform" }}
+      // ⭐ ANIMATE VISIBILITY
+      animate={{
+        opacity: isVisible ? 1 : 0,
+        scale: isVisible ? 1 : 0.5,
+      }}
+      transition={{ duration: 0.2 }}
     >
       <div className="relative flex items-center justify-center">
         
         {/* ⭐ THE YELLOW BLUSH (Background Glow) */}
         <AnimatePresence>
-          {isHovered && (
+          {isHovered && isVisible && (
             <motion.div
               initial={{ opacity: 0, scale: 0 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -66,7 +80,7 @@ export default function CustomCursor() {
           )}
         </AnimatePresence>
 
-        {/* 1. THE EXPANDING DISC (Positioned at the tip) */}
+        {/* 1. THE EXPANDING DISC */}
         <motion.div
           animate={{
             scale: isHovered ? 4 : 1,
@@ -102,7 +116,7 @@ export default function CustomCursor() {
           </svg>
         </motion.div>
 
-        {/* 3. CLICK RIPPLE (Shockwave) */}
+        {/* 3. CLICK RIPPLE */}
         <AnimatePresence>
           {isClicked && (
             <motion.div
@@ -113,21 +127,6 @@ export default function CustomCursor() {
             />
           )}
         </AnimatePresence>
-
-        {/* 4. HOVER LABEL */}
-        <AnimatePresence>
-          {/* {isHovered && (
-            <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 35 }}
-              exit={{ opacity: 0, x: 20 }}
-              className="absolute whitespace-nowrap bg-yellow-400 text-black text-[9px] px-2 py-0.5 font-black uppercase tracking-[0.2em] rounded shadow-2xl"
-            >
-              Select
-            </motion.div>
-          )} */}
-        </AnimatePresence>
-
       </div>
     </motion.div>
   );
