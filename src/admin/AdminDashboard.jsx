@@ -9,6 +9,7 @@ import ProjectsManager from './components/ProjectsManager'
 import ResumeManager from './components/ResumeManager'
 import ContactManager from './components/ContactManager'
 import AdminTechStack from './components/AdminTechStack'
+import ExperiencesManager from './components/ExperiencesManager'
 
 export default function AdminDashboard() {
   const [activeTab, setActiveTab] = useState('hero')
@@ -51,6 +52,7 @@ export default function AdminDashboard() {
   const tabs = [
     { id: 'hero', label: 'Hero' },
     { id: 'about', label: 'About' },
+    { id: 'experience', label: 'Experience' },
     { id: 'cards', label: 'Cards' },
     { id: 'projects', label: 'Projects' },
     { id: 'resume', label: 'Resume' },
@@ -113,6 +115,7 @@ export default function AdminDashboard() {
         <div className="bg-white rounded shadow p-6 mt-6">
           {activeTab === 'hero' && <HeroManager />}
           {activeTab === 'about' && <AboutManager />}
+          {activeTab === 'experience' && <ExperiencesManager />}
           {activeTab === 'cards' && <CardsManager />}
           {activeTab === 'projects' && <ProjectsManager />}
           {activeTab === 'resume' && <ResumeManager />}

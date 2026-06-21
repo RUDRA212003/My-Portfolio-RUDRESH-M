@@ -1,9 +1,9 @@
 import Hero from '../components/Hero'
 import About from '../components/About'
+import ExperiencesSection from '../components/ExperiencesSection'
 import ProjectsSection from '../components/ProjectsSection'
 import CardsSection from '../components/CardsSection'
 import ContactForm from '../components/ContactForm'
-import TechStack from "../components/TechStack";
 
 
 export default function Home() {
@@ -11,7 +11,7 @@ export default function Home() {
     <div>
       <Hero />
       <About />
-      <TechStack />
+      <ExperiencesSection />
       <ProjectsSection />
       <CardsSection />
       <ContactForm />

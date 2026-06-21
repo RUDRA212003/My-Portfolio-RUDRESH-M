@@ -101,13 +101,33 @@ export default function Hero() {
 
             {/* Designation - Yellow */}
             <motion.p
-              className="text-xl md:text-2xl lg:text-3xl text-yellow-400 font-bold tracking-tight mb-6"
+              className="text-xl md:text-2xl lg:text-3xl text-yellow-400 font-bold tracking-tight mb-4"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.8, delay: 0.8 }}
             >
               {hero?.designation || 'Your Designation'}
             </motion.p>
+
+            {/* Current Position Link with Smooth Scroll */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.8, delay: 0.9 }}
+              className="mb-8"
+            >
+              <a
+                href="#experience"
+                onClick={(e) => {
+                  e.preventDefault();
+                  const el = document.getElementById('experience');
+                  if (el) el.scrollIntoView({ behavior: 'smooth' });
+                }}
+                className="inline-block text-[10px] md:text-xs uppercase tracking-[0.25em] font-bold text-white/50 hover:text-yellow-400 border-b border-white/10 hover:border-yellow-400 pb-1 transition-all duration-300"
+              >
+                Current Position: SDE Intern at CAE
+              </a>
+            </motion.div>
 
             {/* Bio Text */}
             

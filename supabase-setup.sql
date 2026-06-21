@@ -91,6 +91,31 @@ CREATE TABLE IF NOT EXISTS contact_messages (
 -- - UPDATE (authenticated users only, or configure as needed)
 -- - DELETE (authenticated users only, or configure as needed)
 
+-- Create experiences table
+CREATE TABLE IF NOT EXISTS experiences (
+  id SERIAL PRIMARY KEY,
+  company_name TEXT NOT NULL,
+  company_logo_url TEXT,
+  role TEXT NOT NULL,
+  short_description TEXT,
+  full_description TEXT,
+  start_date DATE NOT NULL,
+  end_date DATE,
+  is_ongoing BOOLEAN DEFAULT FALSE,
+  technologies TEXT[] DEFAULT '{}',
+  responsibilities TEXT[] DEFAULT '{}',
+  achievements TEXT[] DEFAULT '{}',
+  sort_order INTEGER DEFAULT 0,
+  status TEXT DEFAULT 'draft',
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- Indexes for performance
+CREATE INDEX IF NOT EXISTS idx_experiences_sort_order ON experiences(sort_order);
+CREATE INDEX IF NOT EXISTS idx_experiences_status ON experiences(status);
+
+
+
 
 
 
