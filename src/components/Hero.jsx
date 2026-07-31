@@ -1,10 +1,40 @@
 import { useEffect, useState } from 'react'
-import { motion } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 import { supabase } from '../supabase/supabaseClient'
+import InteractiveMesh from './InteractiveMesh'
 
 export default function Hero() {
   const [hero, setHero] = useState(null)
   const [loading, setLoading] = useState(true)
+  const [showScrollTip, setShowScrollTip] = useState(false)
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 50) {
+        setShowScrollTip(false)
+      }
+    }
+
+    const timer = setTimeout(() => {
+      if (window.scrollY < 50) {
+        setShowScrollTip(true)
+        if (navigator.vibrate) {
+          try {
+            // Pulse heartbeat pattern (150ms vibrate, 150ms pause, 150ms vibrate, 550ms pause) repeated 3 times = 3000ms total
+            navigator.vibrate([150, 150, 150, 550, 150, 150, 150, 550, 150, 150, 150, 550])
+          } catch (err) {
+            console.warn('Vibration blocked or not supported:', err)
+          }
+        }
+      }
+    }, 4000)
+
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    return () => {
+      clearTimeout(timer)
+      window.removeEventListener('scroll', handleScroll)
+    }
+  }, [])
 
   useEffect(() => {
     fetchHero()
@@ -42,6 +72,9 @@ export default function Hero() {
         <div className="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-yellow-600 rounded-full mix-blend-screen filter blur-[120px] opacity-[0.07]"></div>
         <div className="absolute bottom-[-10%] right-[-10%] w-[500px] h-[500px] bg-amber-500 rounded-full mix-blend-screen filter blur-[120px] opacity-[0.07]"></div>
       </div>
+
+      {/* 🚀 Interactive Particle Web Canvas */}
+      <InteractiveMesh />
 
       <div className="relative z-10 max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 w-full">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
@@ -134,6 +167,37 @@ export default function Hero() {
           </motion.div>
         </div>
       </div>
+      {/* Dynamic Scroll Indicator */}
+      <AnimatePresence>
+        {showScrollTip && (
+          <motion.div 
+            className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 cursor-pointer z-20 pointer-events-auto"
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 0.8, y: 0 }}
+            exit={{ opacity: 0, y: 15 }}
+            transition={{ duration: 0.6 }}
+            onClick={() => {
+              const el = document.getElementById('about');
+              if (el) el.scrollIntoView({ behavior: 'smooth' });
+            }}
+          >
+            <motion.span 
+              className="text-[10px] uppercase tracking-[0.3em] font-extrabold text-yellow-400 bg-[#0B0F1A]/80 px-3 py-1 rounded-full border border-yellow-400/20 backdrop-blur-xs shadow-lg shadow-black/40"
+              animate={{ scale: [1, 1.05, 1] }}
+              transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
+            >
+              Scroll to Explore
+            </motion.span>
+            <div className="w-[22px] h-[36px] rounded-full border-2 border-yellow-400/50 flex justify-center p-1.5 backdrop-blur-xs bg-yellow-400/5 shadow-inner">
+              <motion.div 
+                className="w-[3px] h-[8px] rounded-full bg-yellow-400"
+                animate={{ y: [0, 12, 0] }}
+                transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+              />
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </section>
   )
 }
