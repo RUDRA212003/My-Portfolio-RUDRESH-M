@@ -66,7 +66,7 @@ export default function Hero() {
 
   return (
     <section className="relative h-screen w-full overflow-hidden bg-[#0B0F1A] flex items-center justify-center">
-      
+
       {/* ⭐ Yellow Theme Background Mesh - Static & Subtle */}
       <div className="absolute inset-0">
         <div className="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-yellow-600 rounded-full mix-blend-screen filter blur-[120px] opacity-[0.07]"></div>
@@ -78,7 +78,7 @@ export default function Hero() {
 
       <div className="relative z-10 max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 w-full">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          
+
           {/* Profile Image - Permanent Color & Static */}
           <motion.div
             className="flex justify-center lg:justify-start"
@@ -89,7 +89,7 @@ export default function Hero() {
             <div className="relative">
               {/* Permanent Soft Yellow Glow */}
               <div className="absolute inset-0 bg-yellow-500 rounded-full blur-3xl opacity-20"></div>
-              
+
               {hero?.photo_url ? (
                 <img
                   src={hero.photo_url}
@@ -112,7 +112,7 @@ export default function Hero() {
             transition={{ duration: 0.8, delay: 0.2 }}
           >
             {/* Small Label */}
-            
+
 
             {/* Name - Pure White */}
             <motion.h1
@@ -125,7 +125,7 @@ export default function Hero() {
             </motion.h1>
 
             {/* Visual Divider */}
-            <motion.div 
+            <motion.div
               className="h-1.5 w-20 bg-yellow-500 mb-6 mx-auto lg:mx-0 rounded-full"
               initial={{ width: 0 }}
               animate={{ width: 80 }}
@@ -158,19 +158,19 @@ export default function Hero() {
                 }}
                 className="inline-block text-[10px] md:text-xs uppercase tracking-[0.25em] font-bold text-white/50 hover:text-yellow-400 border-b border-white/10 hover:border-yellow-400 pb-1 transition-all duration-300"
               >
-                Current Position: SDE Intern at CAE
+
               </a>
             </motion.div>
 
             {/* Bio Text */}
-            
+
           </motion.div>
         </div>
       </div>
       {/* Dynamic Scroll Indicator */}
       <AnimatePresence>
         {showScrollTip && (
-          <motion.div 
+          <motion.div
             className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 cursor-pointer z-20 pointer-events-auto"
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 0.8, y: 0 }}
@@ -181,7 +181,7 @@ export default function Hero() {
               if (el) el.scrollIntoView({ behavior: 'smooth' });
             }}
           >
-            <motion.span 
+            <motion.span
               className="text-[10px] uppercase tracking-[0.3em] font-extrabold text-yellow-400 bg-[#0B0F1A]/80 px-3 py-1 rounded-full border border-yellow-400/20 backdrop-blur-xs shadow-lg shadow-black/40"
               animate={{ scale: [1, 1.05, 1] }}
               transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
@@ -189,7 +189,7 @@ export default function Hero() {
               Scroll to Explore
             </motion.span>
             <div className="w-[22px] h-[36px] rounded-full border-2 border-yellow-400/50 flex justify-center p-1.5 backdrop-blur-xs bg-yellow-400/5 shadow-inner">
-              <motion.div 
+              <motion.div
                 className="w-[3px] h-[8px] rounded-full bg-yellow-400"
                 animate={{ y: [0, 12, 0] }}
                 transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
